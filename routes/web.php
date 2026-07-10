@@ -2,13 +2,27 @@
 
 use Illuminate\Support\Facades\Route;
 
+// Public routes
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
+
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::get('/signup', function(){
+    return view('auth.signup');
+})->name('signup');
+
+// Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
-});
+})->name('dashboard');
 
 // Employee Management
 Route::get('/employees', function () {
-    return view('employees');
+    return view('pages.hr.employees');
 })->name('employees');
 
 Route::get('/departments', function () {
@@ -56,23 +70,11 @@ Route::get('/users', function () {
     return view('pages.admin.users');
 })->name('users');
 
-Route::get('/role', function () {
+Route::get('/roles', function () {  // Changed from '/role' to '/roles' for consistency
     return view('pages.admin.roles');
 })->name('roles');
 
-// Account
-Route::get('/profile', function () {
-    return view('profile');
-})->name('profile');
-
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-Route::get('/signup', function(){
-    return view('auth.signup');
-})->name('signup');
-
+// Profile - Defined only once
 Route::get('/profile', function(){
     return view('auth.profile');
 })->name('profile');
