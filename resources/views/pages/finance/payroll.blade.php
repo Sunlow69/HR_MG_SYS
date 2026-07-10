@@ -319,4 +319,4 @@
     </div>
 </div>
 
-@endauth
+@endsection
