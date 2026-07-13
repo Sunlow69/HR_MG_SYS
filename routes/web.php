@@ -1,80 +1,33 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
-// Public routes
+// ========== PUBLIC ROUTES ==========
+
+// Homepage - Public Careers Dashboard
 Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+    return view('public.careers');
+})->name('careers');
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+// Auth pages
+Route::get('/auth/signin', [AuthController::class, 'showSignin'])->name('auth.signin');
+Route::post('/auth/signin', [AuthController::class, 'signin']);
 
-Route::get('/signup', function(){
-    return view('auth.signup');
-})->name('signup');
+Route::get('/auth/signup', [AuthController::class, 'showSignup'])->name('auth.signup');
+Route::post('/auth/signup', [AuthController::class, 'signup']);
 
-// Dashboard
-Route::get('/dashboard', function () {
+Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+// Apply page
+Route::get('/apply', function () {
+    return view('apply');
+})->name('apply');
+
+// ========== HR ADMIN SYSTEM ROUTES ==========
+
+// Dashboard (admin) - Keep only the dashboard route since views still exist
+Route::get('/admin/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-// Employee Management
-Route::get('/employees', function () {
-    return view('pages.hr.employees');
-})->name('employees');
-
-Route::get('/departments', function () {
-    return view('pages.hr.departments');
-})->name('departments');
-
-// Recruitment
-Route::get('/jobs', function () {
-    return view('pages.candidate.jobs');
-})->name('jobs');
-
-Route::get('/applications', function () {
-    return view('pages.hr.applications');
-})->name('applications');
-
-// Payroll
-Route::get('/payroll', function () {
-    return view('pages.finance.payroll');
-})->name('payroll');
-
-Route::get('/salaries', function () {
-    return view('pages.hr.salaries');
-})->name('salaries');
-
-Route::get('/mysalary', function () {
-    return view('pages.employee.mysalary');
-})->name('mysalary');
-
-// Attendance
-Route::get('/attendance', function () {
-    return view('pages.hr.attendance');
-})->name('attendance');
-
-Route::get('/myattendance', function () {
-    return view('pages.employee.myattendance');
-})->name('myattendance');
-
-// Scheduling
-Route::get('/schedules', function () {
-    return view('pages.hr.schedules');
-})->name('schedules');
-
-// Administration
-Route::get('/users', function () {
-    return view('pages.admin.users');
-})->name('users');
-
-Route::get('/roles', function () {  // Changed from '/role' to '/roles' for consistency
-    return view('pages.admin.roles');
-})->name('roles');
-
-// Profile - Defined only once
-Route::get('/profile', function(){
-    return view('auth.profile');
-})->name('profile');

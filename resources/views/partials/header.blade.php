@@ -12,8 +12,7 @@
                 @if(Route::currentRouteName() === 'auth.signin')
                     <a href="{{ route('auth.signup') }}" class="btn-nav"><i class="fas fa-user-plus"></i> Sign Up</a>
                 @else
-
-                    <a href="{{ route('auth.signin') }}" class="btn-nav"><i class="fas fa-sign-in-alt"></i> Log In</a>
+                    <a href="{{ route('auth.signin') }}" class="btn-nav"><i class="fas fa-sign-in-alt"></i> Sign In</a>
                 @endif
             </nav>
         </div>
