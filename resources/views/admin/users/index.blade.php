@@ -1,0 +1,75 @@
+@extends('layouts.app')
+
+@section('title', 'Manage Users - Admin')
+
+@section('content')
+<div class="main-content">
+    <div class="top-header">
+        <h2><i class="fas fa-users"></i> Manage Users</h2>
+        <div class="user-profile">
+            <div class="user-info">
+                <h4>{{ auth()->user()->name }}</h4>
+                <span>{{ ucfirst(auth()->user()->role) }}</span>
+            </div>
+            <img src="{{ auth()->user()->photo_url }}" alt="Profile" class="user-avatar">
+        </div>
+    </div>
+
+    @if (session('success'))
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i> {{ session('success') }}
+        </div>
+    @endif
+
+    <div class="card">
+        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <h3 class="card-title">System Users (HR & Employees)</h3>
+            <div style="display: flex; gap: 10px;">
+                <a href="{{ route('admin.users.create') }}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Create User</a>
+            </div>
+        </div>
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Phone</th>
+                    <th>Hourly Rate</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse ($users as $user)
+                    <tr>
+                        <td><a href="{{ route('admin.users.show', $user->id) }}"><strong>{{ $user->name }}</strong></a></td>
+                        <td>{{ $user->email }}</td>
+                        <td>
+                            @if ($user->role === 'hr')
+                                <span class="badge badge-info">HR</span>
+                            @else
+                                <span class="badge badge-success">Employee</span>
+                            @endif
+                        </td>
+                        <td>{{ $user->phone ?? '-' }}</td>
+                        <td>{{ $user->hourly_rate ? '$' . number_format($user->hourly_rate, 2) : '-' }}</td>
+                        <td>
+                            <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" onsubmit="return confirm('Are you sure you want to remove this user?');" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" style="text-align: center;">No users found.</td>
+                    </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection

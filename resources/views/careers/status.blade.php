@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Application Status - Job Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7f9;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #004b6e;
+            border-bottom: 1px solid #003b58;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo-placeholder a {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-placeholder .bank-name {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-placeholder .bank-sub {
+            font-size: 13px;
+            color: #c8dce8;
+            padding-left: 12px;
+            border-left: 2px solid rgba(255, 255, 255, 0.3);
+            font-weight: 400;
+        }
+
+        .top-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-nav .back-link {
+            text-decoration: none;
+            color: #c8dce8;
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .top-nav .back-link:hover {
+            color: white;
+        }
+
+        .top-nav .btn-nav {
+            text-decoration: none;
+            background: white;
+            color: #004b6e;
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .top-nav .btn-nav:hover {
+            background: #e8f0f5;
+            transform: translateY(-1px);
+        }
+
+        .page-body {
+            max-width: 900px;
+            margin: 40px auto 60px;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+            padding: 30px;
+            margin-bottom: 24px;
+        }
+
+        .card h2 {
+            color: #004b6e;
+            margin-bottom: 8px;
+            font-size: 1.4rem;
+        }
+
+        .card p.subtitle {
+            color: #667;
+            font-size: 0.95rem;
+            margin-bottom: 22px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-form input[type="email"] {
+            flex: 1;
+            min-width: 220px;
+            padding: 12px 14px;
+            border: 1px solid #ccd6dd;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .search-form input[type="email"]:focus {
+            outline: none;
+            border-color: #004b6e;
+        }
+
+        .search-form button {
+            background: #e31b23;
+            color: white;
+            border: none;
+            padding: 12px 26px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-form button:hover {
+            background: #c2151c;
+        }
+
+        .app-item {
+            border-bottom: 1px solid #eef1f3;
+            padding: 18px 0;
+        }
+
+        .app-item:last-child {
+            border-bottom: none;
+        }
+
+        .app-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .app-title-row h3 {
+            font-size: 1.05rem;
+            color: #222;
+        }
+
+        .app-meta {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-accepted {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 0;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-wrapper">
+            <div class="logo-placeholder">
+                <a href="{{ route('careers.index') }}">
+                    <span class="bank-name">Company</span>
+                    <span class="bank-sub">Part of National Company Group</span>
+                </a>
+            </div>
+            <nav class="top-nav">
+                <a href="{{ route('careers.index') }}" class="back-link"><i class="fas fa-briefcase"></i> Careers</a>
+                <a href="{{ route('login') }}" class="btn-nav"><i class="fas fa-sign-in-alt"></i> Log In</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-body">
+        <div class="card">
+            <h2><i class="fas fa-search"></i> Check Your Application Status</h2>
+            <p class="subtitle">Enter the email address you used when applying to see the status of your application(s).</p>
+
+            <form action="{{ route('careers.status') }}" method="GET" class="search-form">
+                <input type="email" name="email" placeholder="you@example.com" value="{{ $email }}" required>
+                <button type="submit"><i class="fas fa-search"></i> Check Status</button>
+            </form>
+        </div>
+
+        @if ($searched)
+            <div class="card">
+                @if ($applications->isEmpty())
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open" style="font-size: 2rem; margin-bottom: 10px; display:block;"></i>
+                        No applications found for <strong>{{ $email }}</strong>.
+                    </div>
+                @else
+                    <p class="subtitle" style="margin-bottom: 14px;">
+                        Showing {{ $applications->count() }} application{{ $applications->count() > 1 ? 's' : '' }} for <strong>{{ $email }}</strong>
+                    </p>
+
+                    @foreach ($applications as $application)
+                        <div class="app-item">
+                            <div class="app-title-row">
+                                <h3>{{ $application->jobOpening->title ?? 'Job Posting Removed' }}</h3>
+                                @if ($application->status === 'pending')
+                                    <span class="badge badge-pending"><i class="fas fa-hourglass-half"></i> Pending</span>
+                                @elseif ($application->status === 'accepted')
+                                    <span class="badge badge-accepted"><i class="fas fa-check"></i> Accepted</span>
+                                @else
+                                    <span class="badge badge-rejected"><i class="fas fa-times"></i> Rejected</span>
+                                @endif
+                            </div>
+                            <div class="app-meta">
+                                <i class="far fa-calendar-alt"></i> Applied {{ $application->created_at->diffForHumans() }}
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+        @endif
+    </div>
+</body>
+
+</html>
