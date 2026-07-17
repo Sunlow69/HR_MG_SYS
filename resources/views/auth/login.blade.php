@@ -1,47 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - HR Management System</title>
-    <link rel="stylesheet" href="{{asset('css/style.css')}}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Sign In · Company Name</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href={{asset("css/login.css")}}>
 </head>
+
 <body>
-<div class="login-container">
-    <div class="login-box">
-        <div class="login-logo">
-            <h1><i class="fas fa-users-cog"></i> HRMS</h1>
-            <p>Human Resource Management System</p>
+
+    <header>
+        <div class="container header-wrapper">
+            <div class="logo-placeholder">
+                <a href="{{ route('careers.index') }}">
+                    <span class="bank-name">Company</span>
+                    <span class="bank-sub">Part of National Company Group</span>
+                </a>
+            </div>
+            <nav class="top-nav">
+                <a href="{{ route('careers.index') }}" class="back-link"><i class="fas fa-briefcase"></i> Careers</a>
+                <a href="{{ route('login') }}" class="btn-nav"><i class="fas fa-sign-in-alt"></i> Log In</a>
+            </nav>
         </div>
+    </header>
 
-        @if ($errors->any())
-            <div class="alert alert-danger" style="background-color: #ffe5e5; color: #cc0000; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-size: 14px;">
-                <i class="fas fa-exclamation-circle"></i> {{ $errors->first() }}
+    <div class="login-content">
+        <!-- Left Side -->
+        <div class="brand-section">
+            <div class="company-top">
+                Company Careers<div class="red-square"></div>
             </div>
-        @endif
-
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-            <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input type="email" name="email" class="form-control" placeholder="Enter your email" value="{{ old('email') }}" required>
+            <div class="main-branding">
+                <span class="company-logo-text">
+                    COMPANY<span class="red">'</span> NAME
+                </span>
+                <span class="group-affinity">
+                    GLOBAL<br>ENTERPRISE GROUP
+                </span>
+            </div>
+            <p class="description-text">
+                You're just a few steps away from discovering new job opportunities that match your skills and career
+                goals. Sign in now and take the next step in your career!
+            </p>
+        </div>
+        <!-- Right Side Form Card -->
+        <div class="form-card">
+            <div class="form-header">
+                <h2>
+                    <i class="fas fa-sign-in-alt" style="color: #004b6e; margin-right: 8px;"></i>
+                    Welcome!
+                </h2>
+                <p>Sign in to access new opportunities and manage your applications.</p>
             </div>
 
-            <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+            @if ($errors->any())
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-circle"></i> {{ $errors->first() }}
+                </div>
+            @endif
+
+            @if (session('success'))
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i> {{ session('success') }}
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+                <div class="input-group">
+                    <input type="email" name="email" id="email" placeholder="Email Address" value="{{ old('email') }}"
+                        required>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword()">
+                        <i class="fas fa-eye" id="toggleIcon"></i>
+                    </button>
+                </div>
+                <div class="remember-me">
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </form>
+
+            <div class="form-footer">
+                <a href="#" class="forgot-password">Forgot password?</a>
+                <div class="or-separator">or</div>
+                <p class="register-link">
+                    Don't have an account? <a href="#">Contact our IT Support for more</a>
+                </p>
+                <a href="{{ route('careers.index') }}" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Back to Careers
+                </a>
             </div>
-
-            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
-                <i class="fas fa-sign-in-alt"></i> Login
-            </button>
-        </form>
-
-        <div class="auth-link">
-            <p>Need support? Contact IT Administration.</p>
         </div>
     </div>
-</div>
+
+    <script>
+        function togglePassword() {
+            var x = document.getElementById("password");
+            var icon = document.getElementById("toggleIcon");
+            if (x.type === "password") {
+                x.type = "text";
+                icon.className = "fas fa-eye-slash";
+            } else {
+                x.type = "password";
+                icon.className = "fas fa-eye";
+            }
+        }
+    </script>
 </body>
+
 </html>
