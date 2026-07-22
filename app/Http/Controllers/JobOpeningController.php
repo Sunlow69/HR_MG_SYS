@@ -74,4 +74,13 @@ class JobOpeningController extends Controller
         $jobOpenings = JobOpening::open()->latest()->get();
         return view('careers.index', compact('jobOpenings'));
     }
+
+    // Public: single job detail page (Candidates view full description)
+    public function show(JobOpening $job)
+    {
+        abort_unless($job->status === 'open', 404);
+ 
+        return view('careers.show', compact('job'));
+    }
+    
 }

@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('job_openings', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
+            $table->longtext('description');
             $table->enum('status', ['open', 'closed'])->default('open');
             $table->foreignId('posted_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();

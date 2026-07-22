@@ -67,12 +67,12 @@
                     @forelse ($jobOpenings as $job)
                         <div class="job-item">
                             <div class="job-title-row">
-                                <h3 onclick="window.location='{{ route('careers.apply', $job->id) }}'">{{ $job->title }}
+                                <h3 onclick="window.location='{{ route('careers.show', $job->id) }}'">{{ $job->title }}
                                 </h3>
                                 <span class="badge-new">New</span>
                             </div>
                             <p class="job-desc">
-                                {{ Str::limit($job->description, 300) }}
+                                {{ Str::limit(strip_tags($job->description), 300) }}
                             </p>
                             <div class="job-meta">
                                 <span><i class="far fa-calendar-alt"></i> Posted

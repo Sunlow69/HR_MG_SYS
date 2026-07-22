@@ -20,6 +20,9 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('auth.google.redirect');
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+
 // Admin routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
@@ -99,6 +102,7 @@ Route::middleware(['auth', 'role:employee'])->prefix('employee')->name('employee
 
 // Candidate routes (public, no login)
 Route::get('/', [JobOpeningController::class, 'publicIndex'])->name('careers.index');
+Route::get('/careers/{job}', [JobOpeningController::class, 'show'])->name('careers.show');
 Route::get('/careers/{job}/apply', [ApplicationController::class, 'create'])->name('careers.apply');
 Route::post('/careers/{job}/apply', [ApplicationController::class, 'store'])->name('careers.apply.store');
 
@@ -113,4 +117,3 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
-

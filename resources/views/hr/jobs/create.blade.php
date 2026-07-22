@@ -3,6 +3,10 @@
 @section('title', 'Post New Job - HR')
 
 @section('content')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.css" rel="stylesheet">
+<style>
+    #description-editor { background: white; min-height: 200px; }
+</style>
 <div class="main-content">
     <div class="top-header">
         <h2><i class="fas fa-plus"></i> Post New Job Opening</h2>
@@ -44,7 +48,8 @@
 
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label class="form-label" for="description">Job Description</label>
-                    <textarea name="description" id="description" rows="6" class="form-control" placeholder="Provide detailed roles, responsibilities, and requirements..." required>{{ old('description') }}</textarea>
+                    <div id="description-editor">{!! old('description') !!}</div>
+                    <textarea name="description" id="description" style="display: none;" >{{ old('description') }}</textarea>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 20px;">
@@ -60,4 +65,28 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
+<script>
+    const quill = new Quill('#description-editor', {
+        theme: 'snow',
+        placeholder: 'Provide detailed roles, responsibilities, and requirements...',
+        modules: {
+            toolbar: [
+                [{ header: [2, 3, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                ['link'],
+                ['clean']
+            ]
+        }
+    });
+
+    const form = document.querySelector('form[action="{{ route('hr.jobs.store') }}"]');
+    const descriptionInput = document.querySelector('#description');
+
+    form.addEventListener('submit', function () {
+        descriptionInput.value = quill.root.innerHTML;
+    });
+</script>
 @endsection
