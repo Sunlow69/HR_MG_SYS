@@ -13,7 +13,7 @@
 
     <aside class="sidebar">
         <div class="sidebar-header">
-            <h2><i class="fas fa-users-cog"></i> HRMS</h2>
+            <h2><i class="fas fa-users-cog"></i> ChillVibe HR</h2>
             <p>Human Resource Management</p>
         </div>
 

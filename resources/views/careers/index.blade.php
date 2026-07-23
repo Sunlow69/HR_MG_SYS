@@ -14,7 +14,7 @@
         <div class="container header-wrapper">
             <div class="logo-placeholder">
                 <a href="{{ route('careers.index') }}">
-                    <span class="bank-name">Company</span>
+                    <span class="bank-name">ChillVibe HR</span>
                     <span class="bank-sub">Part of National Company Group</span>
                 </a>
             </div>

@@ -24,22 +24,22 @@
         <div class="stat-card">
             <div class="stat-icon blue"><i class="fas fa-users"></i></div>
             <div class="stat-details">
-                <h3>System Users</h3>
-                <p>Manage all accounts</p>
+                <h3>{{ number_format($userCount) }}</h3>
+                <p>System Users</p>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon green"><i class="fas fa-money-check-alt"></i></div>
             <div class="stat-details">
-                <h3>Payroll Approval</h3>
-                <p>Review and release pay</p>
+                <h3>{{ number_format($pendingPayrollCount) }}</h3>
+                <p>Payroll Awaiting Approval</p>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon red"><i class="fas fa-hand-holding-usd"></i></div>
             <div class="stat-details">
-                <h3>Wage Requests</h3>
-                <p>Process pending requests</p>
+                <h3>{{ number_format($pendingWageRequestCount) }}</h3>
+                <p>Pending Wage Requests</p>
             </div>
         </div>
     </div>

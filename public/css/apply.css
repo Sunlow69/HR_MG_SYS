@@ -742,3 +742,230 @@ footer {
         padding: 24px;
     }
 }
+/* Job detail page (careers/show) — aligned to this stylesheet's navy/teal palette */
+.job-detail-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 28px;
+    align-items: start;
+}
+
+.job-detail-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 66, 97, 0.04);
+}
+
+.job-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(16, 185, 129, 0.1);
+    color: #0d8f5f;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+}
+
+.job-status-badge i {
+    font-size: 10px;
+}
+
+.job-detail-title {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: #004261;
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+    margin: 0 0 14px 0;
+}
+
+.job-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.job-detail-meta .meta-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f4f7f9;
+    color: #555;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+.job-detail-meta i {
+    color: #148cb0;
+}
+
+.job-detail-divider {
+    border-top: 1px solid #eef1f3;
+    margin: 24px 0;
+}
+
+/* Rendered Quill output */
+.job-description-content {
+    color: #333;
+    line-height: 1.75;
+    font-size: 1rem;
+}
+
+.job-description-content h2 {
+    font-size: 1.3rem;
+    color: #004261;
+    margin: 24px 0 10px;
+}
+
+.job-description-content h3 {
+    font-size: 1.1rem;
+    color: #004261;
+    margin: 18px 0 8px;
+}
+
+.job-description-content p {
+    margin: 0 0 14px;
+}
+
+.job-description-content ul,
+.job-description-content ol {
+    margin: 0 0 14px;
+    padding-left: 24px;
+}
+
+.job-description-content li {
+    margin-bottom: 6px;
+}
+
+.job-description-content strong {
+    color: #1a1a1a;
+}
+
+.job-description-content blockquote {
+    border-left: 3px solid #148cb0;
+    background: #f4f9fb;
+    padding: 12px 18px;
+    margin: 0 0 14px;
+    color: #444;
+    font-style: italic;
+}
+
+.job-description-content a {
+    color: #148cb0;
+    text-decoration: underline;
+}
+
+.job-description-content img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+/* Sticky apply sidebar (desktop) */
+.job-detail-sidebar {
+    position: sticky;
+    top: 88px;
+}
+
+.job-apply-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 66, 97, 0.04);
+    text-align: center;
+}
+
+.job-apply-card h3 {
+    font-size: 1.05rem;
+    color: #004261;
+    margin-bottom: 8px;
+}
+
+.job-apply-card p {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 18px;
+    line-height: 1.5;
+}
+
+.sidebar-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    font-size: 13px;
+    color: #888;
+    text-decoration: none;
+}
+
+.sidebar-back-link:hover {
+    color: #148cb0;
+}
+
+/* Apply button (shared red CTA used across careers pages) */
+.btn-red {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #d92525;
+    color: white;
+    padding: 12px 26px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 4px 12px rgba(217, 37, 37, 0.25);
+}
+
+.btn-red:hover {
+    background: #b31c1c;
+    transform: translateY(-1px);
+}
+
+.btn-block {
+    width: 100%;
+}
+
+/* Mobile sticky apply bar */
+.mobile-apply-bar {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .job-detail-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .job-detail-sidebar {
+        display: none;
+    }
+
+    .job-detail-card {
+        padding: 24px;
+    }
+
+    .mobile-apply-bar {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 12px 16px;
+        box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
+        z-index: 200;
+    }
+
+    .page-wrapper {
+        padding-bottom: 90px;
+    }
+}

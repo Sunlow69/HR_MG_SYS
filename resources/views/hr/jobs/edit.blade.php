@@ -4,9 +4,6 @@
 
 @section('content')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.css" rel="stylesheet">
-<style>
-    #description-editor { background: white; min-height: 200px; }
-</style>
 <div class="main-content">
     <div class="top-header">
         <h2><i class="fas fa-edit"></i> Edit Job Opening</h2>

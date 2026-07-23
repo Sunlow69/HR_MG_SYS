@@ -50,19 +50,35 @@
             <table class="data-table">
                 <thead>
                 <tr>
-                    <th>Employee</th>
-                    <th>Date</th>
+                    @php
+                        $sortLink = function ($column, $label) use ($sort, $direction) {
+                            $req = request();
+                            $nextDirection = ($sort === $column && $direction === 'asc') ? 'desc' : 'asc';
+                            $icon = $sort === $column
+                                ? ($direction === 'asc' ? 'fa-sort-up' : 'fa-sort-down')
+                                : 'fa-sort';
+                            $params = array_merge($req->query(), ['sort' => $column, 'direction' => $nextDirection]);
+                            return '<a href="' . $req->url() . '?' . http_build_query($params) . '" style="color:inherit; text-decoration:none;">'
+                                . $label . ' <i class="fas ' . $icon . '" style="font-size: 11px; opacity: 0.6;"></i></a>';
+                        };
+                    @endphp
+                    <th>{!! $sortLink('employee_name', 'Employee') !!}</th>
+                    <th>{!! $sortLink('date', 'Date') !!}</th>
                     <th>Check In</th>
                     <th>Check Out</th>
-                    <th>Hours</th>
-                    <th>Status</th>
+                    <th>{!! $sortLink('hours', 'Hours') !!}</th>
+                    <th>{!! $sortLink('status', 'Status') !!}</th>
                     <th>Actions (Manual Edit)</th>
                 </tr>
                 </thead>
                 <tbody>
                 @forelse ($records as $record)
                     <tr>
-                        <td><strong>{{ $record->employee->name }}</strong></td>
+                        <td>
+                            <a href="{{ route('hr.attendance.show', $record->employee_id) }}">
+                                <strong>{{ $record->employee->name }}</strong>
+                            </a>
+                        </td>
                         <td>{{ $record->date->format('M d, Y') }}</td>
                         <td>{{ $record->check_in ? \Carbon\Carbon::parse($record->check_in)->format('h:i A') : '--' }}</td>
                         <td>{{ $record->check_out ? \Carbon\Carbon::parse($record->check_out)->format('h:i A') : '--' }}</td>

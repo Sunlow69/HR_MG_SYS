@@ -9,10 +9,21 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     // List all HR + Employee users
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::whereIn('role', ['hr', 'employee'])->latest()->get();
-        return view('admin.users.index', compact('users'));
+        $sort = $request->get('sort', 'created_at');
+        $direction = $request->get('direction') === 'asc' ? 'asc' : 'desc';
+
+        $allowedSorts = ['name', 'email', 'role', 'phone', 'hourly_rate', 'created_at'];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'created_at';
+        }
+
+        $users = User::whereIn('role', ['hr', 'employee'])
+            ->orderBy($sort, $direction)
+            ->get();
+
+        return view('admin.users.index', compact('users', 'sort', 'direction'));
     }
 
     // Show create form

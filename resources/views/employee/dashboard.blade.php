@@ -24,22 +24,22 @@
         <div class="stat-card">
             <div class="stat-icon blue"><i class="fas fa-calendar-check"></i></div>
             <div class="stat-details">
-                <h3>My Attendance</h3>
-                <p>Check in and out daily</p>
+                <h3>{{ number_format($presentDaysThisMonthCount) }}</h3>
+                <p>Present Days This Month</p>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon green"><i class="fas fa-calendar-alt"></i></div>
             <div class="stat-details">
-                <h3>My Shifts</h3>
-                <p>View assigned work shifts</p>
+                <h3>{{ number_format($upcomingShiftCount) }}</h3>
+                <p>Upcoming Shifts</p>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon orange"><i class="fas fa-wallet"></i></div>
             <div class="stat-details">
-                <h3>My Payroll</h3>
-                <p>View payslips and wage details</p>
+                <h3>{{ number_format($payslipCount) }}</h3>
+                <p>Payslips Available</p>
             </div>
         </div>
     </div>

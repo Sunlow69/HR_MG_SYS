@@ -32,11 +32,23 @@
             <table class="data-table">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Phone</th>
-                    <th>Hourly Rate</th>
+                    @php
+                        $sortLink = function ($column, $label) use ($sort, $direction) {
+                            $req = request();
+                            $nextDirection = ($sort === $column && $direction === 'asc') ? 'desc' : 'asc';
+                            $icon = $sort === $column
+                                ? ($direction === 'asc' ? 'fa-sort-up' : 'fa-sort-down')
+                                : 'fa-sort';
+                            $params = array_merge($req->query(), ['sort' => $column, 'direction' => $nextDirection]);
+                            return '<a href="' . $req->url() . '?' . http_build_query($params) . '" style="color:inherit; text-decoration:none;">'
+                                . $label . ' <i class="fas ' . $icon . '" style="font-size: 11px; opacity: 0.6;"></i></a>';
+                        };
+                    @endphp
+                    <th>{!! $sortLink('name', 'Name') !!}</th>
+                    <th>{!! $sortLink('email', 'Email') !!}</th>
+                    <th>{!! $sortLink('role', 'Role') !!}</th>
+                    <th>{!! $sortLink('phone', 'Phone') !!}</th>
+                    <th>{!! $sortLink('hourly_rate', 'Hourly Rate') !!}</th>
                     <th>Actions</th>
                 </tr>
                 </thead>

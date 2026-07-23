@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'My Attendance - Employee')
+@section('title', $employee->name . ' - Attendance')
 
 @section('content')
 <div class="main-content">
     <div class="top-header">
-        <h2><i class="fas fa-clock"></i> My Attendance</h2>
+        <h2><i class="fas fa-clock"></i> {{ $employee->name }}'s Attendance</h2>
         <div class="user-profile">
             <div class="user-info">
                 <h4>{{ auth()->user()->name }}</h4>
@@ -15,42 +15,21 @@
         </div>
     </div>
 
-    @if (session('success'))
-        <div class="alert alert-success">
-            <i class="fas fa-check-circle"></i> {{ session('success') }}
-        </div>
-    @endif
-    @if (session('error'))
-        <div class="alert alert-danger" style="background-color: #ffe5e5; color: #cc0000; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
-            <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
-        </div>
-    @endif
+    <div style="margin-bottom: 15px;">
+        <a href="{{ route('hr.attendance.index') }}" class="btn btn-sm" style="background:#e2e8f0; color:#1e293b;">
+            <i class="fas fa-arrow-left"></i> Back to All Attendance
+        </a>
+    </div>
 
     <div class="card" style="margin-bottom: 25px;">
         <div class="card-header">
-            <h3 class="card-title">Clock In / Out</h3>
-            <div style="font-size: 0.9rem; color: #64748b;">
-                Current Time: <span id="attendance-live-clock" data-timezone="{{ config('app.timezone') }}"></span>
-            </div>
+            <h3 class="card-title"><i class="fas fa-id-badge"></i> Employee Info</h3>
         </div>
-        <div style="padding: 20px; text-align: center;">
-            @if (!$today)
-                <p style="margin-bottom: 15px; color: #706f6c;">You have not clocked in today yet.</p>
-                <form method="POST" action="{{ route('employee.attendance.clockin') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-success btn-lg" style="padding: 10px 40px;"><i class="fas fa-sign-in-alt"></i> Clock In</button>
-                </form>
-            @elseif (!$today->check_out)
-                <p style="margin-bottom: 15px; color: #22c55e; font-weight: bold;"><i class="fas fa-check-circle"></i> Clocked in at {{ \Carbon\Carbon::parse($today->check_in)->format('h:i A') }}</p>
-                <form method="POST" action="{{ route('employee.attendance.clockout') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-danger btn-lg" style="padding: 10px 40px;"><i class="fas fa-sign-out-alt"></i> Clock Out</button>
-                </form>
-            @else
-                <div class="alert alert-success" style="display: inline-block; margin-bottom: 0;">
-                    <i class="fas fa-calendar-check"></i> Today's attendance complete. Checked out at {{ \Carbon\Carbon::parse($today->check_out)->format('h:i A') }}
-                </div>
-            @endif
+        <div style="padding: 20px; display: flex; gap: 40px; flex-wrap: wrap;">
+            <div><strong>Name:</strong> {{ $employee->name }}</div>
+            <div><strong>Email:</strong> {{ $employee->email }}</div>
+            <div><strong>Phone:</strong> {{ $employee->phone ?? '-' }}</div>
+            <div><strong>Hourly Rate:</strong> {{ $employee->hourly_rate ? '$' . number_format($employee->hourly_rate, 2) : '-' }}</div>
         </div>
     </div>
 
@@ -58,11 +37,11 @@
         <div class="card-header">
             <h3 class="card-title"><i class="fas fa-calendar-alt"></i> Attendance Calendar</h3>
             <div class="calendar-nav">
-                <a href="{{ route('employee.attendance.index', ['month' => $month->copy()->subMonth()->format('Y-m')]) }}" class="calendar-nav-btn">
+                <a href="{{ route('hr.attendance.show', ['employee' => $employee->id, 'month' => $month->copy()->subMonth()->format('Y-m')]) }}" class="calendar-nav-btn">
                     <i class="fas fa-chevron-left"></i>
                 </a>
                 <span class="calendar-month-label">{{ $month->format('F Y') }}</span>
-                <a href="{{ route('employee.attendance.index', ['month' => $month->copy()->addMonth()->format('Y-m')]) }}" class="calendar-nav-btn">
+                <a href="{{ route('hr.attendance.show', ['employee' => $employee->id, 'month' => $month->copy()->addMonth()->format('Y-m')]) }}" class="calendar-nav-btn">
                     <i class="fas fa-chevron-right"></i>
                 </a>
             </div>
@@ -140,4 +119,5 @@
             </table>
         </div>
     </div>
+</div>
 @endsection

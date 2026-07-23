@@ -24,29 +24,29 @@
         <div class="stat-card">
             <div class="stat-icon blue"><i class="fas fa-briefcase"></i></div>
             <div class="stat-details">
-                <h3>Recruitment</h3>
-                <p>Manage announcements & jobs</p>
+                <h3>{{ number_format($openJobCount) }}</h3>
+                <p>Open Job Postings</p>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon green"><i class="fas fa-clock"></i></div>
             <div class="stat-details">
-                <h3>Attendance</h3>
-                <p>Monitor shift logs</p>
+                <h3>{{ number_format($checkedInTodayCount) }}</h3>
+                <p>Checked In Today</p>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon orange"><i class="fas fa-calendar-alt"></i></div>
             <div class="stat-details">
-                <h3>Scheduling</h3>
-                <p>Assign shifts and timetables</p>
+                <h3>{{ number_format($shiftsThisWeekCount) }}</h3>
+                <p>Shifts Scheduled This Week</p>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon red"><i class="fas fa-calculator"></i></div>
             <div class="stat-details">
-                <h3>Payroll & Wages</h3>
-                <p>Generate payroll cycles</p>
+                <h3>{{ number_format($pendingWageRequestCount) }}</h3>
+                <p>Pending Wage Requests</p>
             </div>
         </div>
     </div>

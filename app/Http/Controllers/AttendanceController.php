@@ -5,25 +5,66 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\Schedule;
+use App\Models\User;
 use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
     // Employee: view own attendance history
-    public function myAttendance()
+    public function myAttendance(Request $request)
     {
         $timezone = config('app.timezone');
-        $today = Carbon::today($timezone)->toDateString();
+        $todayDate = Carbon::today($timezone)->toDateString();
 
         $records = Attendance::where('employee_id', auth()->id())
             ->orderBy('date', 'desc')
             ->get();
 
         $today = Attendance::where('employee_id', auth()->id())
-            ->where('date', $today)
+            ->where('date', $todayDate)
             ->first();
 
-        return view('employee.attendance.index', compact('records', 'today'));
+        // Selected month for the calendar (defaults to the current month)
+        $month = $request->filled('month')
+            ? Carbon::createFromFormat('Y-m', $request->month, $timezone)->startOfMonth()
+            : Carbon::today($timezone)->startOfMonth();
+
+        $recordsByDate = Attendance::where('employee_id', auth()->id())
+            ->whereBetween('date', [
+                $month->copy()->startOfMonth()->toDateString(),
+                $month->copy()->endOfMonth()->toDateString(),
+            ])
+            ->get()
+            ->keyBy(fn ($record) => $record->date->toDateString());
+
+        $calendarWeeks = [];
+        $cursor = $month->copy()->startOfWeek(Carbon::SUNDAY);
+        $end = $month->copy()->endOfMonth()->endOfWeek(Carbon::SUNDAY);
+        $todayCarbon = Carbon::today($timezone);
+
+        while ($cursor->lessThanOrEqualTo($end)) {
+            $week = [];
+            for ($i = 0; $i < 7; $i++) {
+                $dateStr = $cursor->toDateString();
+                $record = $recordsByDate->get($dateStr);
+                $isWeekend = $cursor->isWeekend();
+
+                // No attendance row on a weekend just means it was a weekend —
+                // treat it as such visually even though nothing was recorded.
+                $status = $record->status ?? ($isWeekend ? 'weekend' : null);
+
+                $week[] = [
+                    'day' => $cursor->day,
+                    'isCurrentMonth' => $cursor->month === $month->month,
+                    'isToday' => $cursor->isSameDay($todayCarbon),
+                    'status' => $status,
+                ];
+                $cursor->addDay();
+            }
+            $calendarWeeks[] = $week;
+        }
+
+        return view('employee.attendance.index', compact('records', 'today', 'month', 'calendarWeeks'));
     }
 
     // Employee: clock in
@@ -97,16 +138,84 @@ class AttendanceController extends Controller
     // HR: view all employees' attendance
     public function index(Request $request)
     {
-        $query = Attendance::with('employee')->orderBy('date', 'desc');
+        $sort = $request->get('sort', 'date');
+        $direction = $request->get('direction') === 'asc' ? 'asc' : 'desc';
+
+        $allowedSorts = ['employee_name', 'date', 'hours', 'status'];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'date';
+        }
+
+        $query = Attendance::with('employee');
 
         if ($request->filled('employee_id')) {
             $query->where('employee_id', $request->employee_id);
         }
 
-        $records = $query->get();
-        $employees = \App\Models\User::where('role', 'employee')->get();
+        if ($sort === 'employee_name') {
+            // Join users so we can sort by the employee's name
+            $query->join('users', 'users.id', '=', 'attendance.employee_id')
+                ->orderBy('users.name', $direction)
+                ->select('attendance.*');
+        } else {
+            $query->orderBy($sort, $direction);
+        }
 
-        return view('hr.attendance.index', compact('records', 'employees'));
+        $records = $query->get();
+        $employees = User::where('role', 'employee')->orderBy('name')->get();
+
+        return view('hr.attendance.index', compact('records', 'employees', 'sort', 'direction'));
+    }
+
+    // HR: view a single employee's attendance page (calendar + history)
+    public function show(Request $request, User $employee)
+    {
+        abort_if($employee->role !== 'employee', 404);
+
+        $timezone = config('app.timezone');
+
+        $records = Attendance::where('employee_id', $employee->id)
+            ->orderBy('date', 'desc')
+            ->get();
+
+        $month = $request->filled('month')
+            ? Carbon::createFromFormat('Y-m', $request->month, $timezone)->startOfMonth()
+            : Carbon::today($timezone)->startOfMonth();
+
+        $recordsByDate = Attendance::where('employee_id', $employee->id)
+            ->whereBetween('date', [
+                $month->copy()->startOfMonth()->toDateString(),
+                $month->copy()->endOfMonth()->toDateString(),
+            ])
+            ->get()
+            ->keyBy(fn ($record) => $record->date->toDateString());
+
+        $calendarWeeks = [];
+        $cursor = $month->copy()->startOfWeek(Carbon::SUNDAY);
+        $end = $month->copy()->endOfMonth()->endOfWeek(Carbon::SUNDAY);
+        $todayCarbon = Carbon::today($timezone);
+
+        while ($cursor->lessThanOrEqualTo($end)) {
+            $week = [];
+            for ($i = 0; $i < 7; $i++) {
+                $dateStr = $cursor->toDateString();
+                $record = $recordsByDate->get($dateStr);
+                $isWeekend = $cursor->isWeekend();
+
+                $status = $record->status ?? ($isWeekend ? 'weekend' : null);
+
+                $week[] = [
+                    'day' => $cursor->day,
+                    'isCurrentMonth' => $cursor->month === $month->month,
+                    'isToday' => $cursor->isSameDay($todayCarbon),
+                    'status' => $status,
+                ];
+                $cursor->addDay();
+            }
+            $calendarWeeks[] = $week;
+        }
+
+        return view('hr.attendance.show', compact('employee', 'records', 'month', 'calendarWeeks'));
     }
 
     // HR: manually edit a record (e.g. mark absent, fix mistake)

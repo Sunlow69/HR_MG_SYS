@@ -7,75 +7,6 @@
     <title>{{ $job->title }} - Job Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href={{asset('css/apply.css')}}>
-    <style>
-        .job-detail-card {
-            background: #fff;
-            border-radius: 10px;
-            padding: 32px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-        }
-
-        .job-detail-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 16px;
-            flex-wrap: wrap;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
-        }
-
-        .job-detail-header h1 {
-            font-size: 1.6rem;
-            margin: 0 0 8px 0;
-            color: #1a1a1a;
-        }
-
-        .job-detail-meta {
-            color: #777;
-            font-size: 0.9rem;
-        }
-
-        .job-detail-meta span {
-            margin-right: 16px;
-        }
-
-        .job-detail-meta i {
-            margin-right: 4px;
-        }
-
-        /* Rendered Quill output */
-        .job-description-content {
-            color: #333;
-            line-height: 1.7;
-            font-size: 1rem;
-        }
-
-        .job-description-content h2 {
-            font-size: 1.3rem;
-            margin: 20px 0 10px;
-        }
-
-        .job-description-content h3 {
-            font-size: 1.1rem;
-            margin: 16px 0 8px;
-        }
-
-        .job-description-content p {
-            margin: 0 0 12px;
-        }
-
-        .job-description-content ul,
-        .job-description-content ol {
-            margin: 0 0 12px;
-            padding-left: 24px;
-        }
-
-        .job-description-content a {
-            color: #148cb0;
-        }
-    </style>
 </head>
 
 <body>
@@ -83,7 +14,7 @@
         <div class="container header-wrapper">
             <div class="logo-placeholder">
                 <a href="{{ route('careers.index') }}">
-                    <span class="bank-name">Company</span>
+                    <span class="bank-name">ChillVibe HR</span>
                     <span class="bank-sub">Part of National Company Group</span>
                 </a>
             </div>
@@ -120,7 +51,7 @@
                         <span><i class="fas fa-building"></i> {{ $job->postedBy ? $job->postedBy->name : 'HR Department' }}</span>
                     </div>
                 </div>
-                <a href="{{ route('careers.apply', $job->id) }}" class="btn-red">Apply Now</a>
+                
             </div>
 
             <div class="job-description-content">
